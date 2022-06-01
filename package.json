@@ -23,6 +23,8 @@
     "start:dev:frontend": "yarn --cwd apps/frontend start",
     "db:start": "yarn --cwd app/backend prisma:start:db",
 
-    "start:prod:backend": "yarn --cwd apps/backend start:remote"
+    "start:prod:backend": "yarn --cwd apps/backend start:remote",
+
+    "execute:prod:backend": "yarn --cwd apps/backend execute:production"
   }
 }

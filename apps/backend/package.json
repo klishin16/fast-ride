@@ -20,10 +20,10 @@
   "scripts": {
     "build": "nest build",
     "start": "NODE_ENV=development nest start",
-    "start:remote": "NODE_ENV=production nest start",
+    "start:prod": "NODE_ENV=production nest start",
     "start:dev": "NODE_ENV=development; nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "NODE_ENV=production; node dist/main",
+    "execute:production": "NODE_ENV=production; nest build; node dist/src/main.js",
 
     "migrate:dev": "NODE_ENV=development; prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",

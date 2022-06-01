@@ -28,6 +28,6 @@
     "build:prod:backend": "yarn --cwd apps/backend production:build",
     "execute:prod:backend": "yarn --cwd apps/backend production:execute",
 
-    "deploy:heroku": ""
+    "deploy:heroku": "yarn --cwd apps/frontend build; yarn --cwd apps/backend production:build; node apps/backend/dist/src/main.js "
   }
 }

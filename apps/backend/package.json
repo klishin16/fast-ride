@@ -26,6 +26,8 @@
     "start:debug": "nest start --debug --watch",
     "production:execute": "NODE_ENV=production; node dist/src/main.js",
 
+    "deploy:vercel": "nest build && now",
+
     "migrate:dev": "NODE_ENV=development; prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",
     "migrate:reset": "prisma migrate reset --preview-feature",

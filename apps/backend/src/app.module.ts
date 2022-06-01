@@ -9,6 +9,8 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { CommentsModule } from './comments/comments.module';
 import { ConfigModule } from "@nestjs/config";
 import { configuration } from "../config/configuration";
+import {ServeStaticModule} from "@nestjs/serve-static";
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -17,6 +19,10 @@ import { configuration } from "../config/configuration";
       envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
       load: [configuration],
       // validationSchema: validationSchema
+    }),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../../frontend/dist/client')
     }),
 
     GraphQLModule.forRootAsync<ApolloDriverConfig>({

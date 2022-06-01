@@ -1,0 +1,19 @@
+query GetUsers($first: Int, $after: String) {
+  usersWithPagination(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        email
+        firstname
+        lastname
+        createdAt
+        updatedAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    totalCount
+  }
+}

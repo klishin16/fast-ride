@@ -1,0 +1,337 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+type Auth {
+    "JWT access token"
+    accessToken: JWT!
+    "JWT refresh token"
+    refreshToken: JWT!
+    user: User!
+}
+
+type Comment {
+    author: User
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    id: ID!
+    likes: [CommentLike!]!
+    review: Review!
+    text: String!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type CommentConnection {
+    edges: [CommentEdge!]
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type CommentEdge {
+    cursor: String!
+    node: Comment!
+}
+
+type CommentLike {
+    author: User!
+    comment: Comment!
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    id: ID!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type Estimation {
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    id: ID!
+    review: Review!
+    road_congestion: Int!
+    road_quality: Int!
+    travel_safety: Int!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type Feature {
+    bottomRightLat: Int!
+    bottomRightLnt: Int!
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    geometry: [[Int!]!]!
+    id: ID!
+    mapId: Int!
+    review: Review
+    topLeftLat: Int!
+    topLeftLng: Int!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type FeatureConnection {
+    edges: [FeatureEdge!]
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type FeatureEdge {
+    cursor: String!
+    node: Feature!
+}
+
+type Mutation {
+    changePassword(data: ChangePasswordInput!): User!
+    createComment(data: CreateCommentInput!): Comment!
+    createEstimation(data: CreateEstimationInput!): Estimation!
+    createFeature(data: CreateFeatureInput!): Feature!
+    createPost(data: CreatePostInput!): Post!
+    "Create new review"
+    createReview(data: CreateReviewInput!): Review!
+    login(data: LoginInput!): Auth!
+    refreshToken(token: JWT!): Token!
+    signup(data: SignupInput!): Auth!
+    updateComment(data: UpdateCommentInput!): Comment!
+    updateEstimation(data: UpdateEstimationInput!): Estimation!
+    updateFeature(data: UpdateFeatureInput!): Feature!
+    updateReview(data: UpdateReviewInput!): Review!
+    updateUser(data: UpdateUserInput!): User!
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Post {
+    author: User!
+    content: String!
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    id: ID!
+    published: Boolean!
+    title: String!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type PostConnection {
+    edges: [PostEdge!]
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type PostEdge {
+    cursor: String!
+    node: Post!
+}
+
+type Query {
+    comments(after: String, before: String, first: Int, last: Int, query: String, reviewId: String, skip: Int): CommentConnection!
+    estimations: [Estimation!]!
+    features(bounds: GeometryBoundArgs!, data: GetFeaturesInput!): [Feature!]!
+    featuresWithPagination(after: String, before: String, first: Int, last: Int, query: String, skip: Int): FeatureConnection!
+    hello(name: String!): String!
+    helloWorld: String!
+    me: User!
+    post(postId: String!): Post!
+    publishedPosts(after: String, before: String, first: Int, last: Int, orderBy: PostOrder, query: String, skip: Int): PostConnection!
+    review(data: GetReviewInput!): Review
+    reviews(userId: String): [Review!]!
+    reviewsWithPagination(after: String, before: String, first: Int, last: Int, query: String, skip: Int): ReviewConnection!
+    userPosts(userId: String!): [Post!]!
+    usersWithPagination(after: String, before: String, first: Int, last: Int, query: String, skip: Int): UsersConnection!
+}
+
+type Review {
+    comments: [Comment!]!
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    estimation: Estimation
+    feature: Feature
+    id: ID!
+    in_progress: Boolean!
+    title: String!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type ReviewConnection {
+    edges: [ReviewEdge!]
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type ReviewEdge {
+    cursor: String!
+    node: Review!
+}
+
+type Subscription {
+    postCreated: Post!
+    reviewCreated: Review!
+}
+
+type Token {
+    "JWT access token"
+    accessToken: JWT!
+    "JWT refresh token"
+    refreshToken: JWT!
+}
+
+type User {
+    "Identifies the date and time when the object was created."
+    createdAt: DateTime!
+    email: String!
+    firstname: String
+    id: ID!
+    lastname: String
+    posts: [Post!]!
+    role: Role!
+    "Identifies the date and time when the object was last updated."
+    updatedAt: DateTime!
+}
+
+type UserEdge {
+    cursor: String!
+    node: User!
+}
+
+type UsersConnection {
+    edges: [UserEdge!]
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+"Possible directions in which to order a list of items when provided an `orderBy` argument."
+enum OrderDirection {
+    asc
+    desc
+}
+
+"Properties by which post connections can be ordered."
+enum PostOrderField {
+    content
+    createdAt
+    id
+    published
+    title
+    updatedAt
+}
+
+"User role"
+enum Role {
+    ADMIN
+    USER
+}
+
+"A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
+scalar DateTime
+
+"A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction."
+scalar JWT
+
+input ChangePasswordInput {
+    newPassword: String!
+    oldPassword: String!
+}
+
+input CreateCommentInput {
+    authorId: String
+    reviewId: String
+    text: String!
+}
+
+input CreateEstimationInput {
+    reviewId: String!
+    road_congestion: Int!
+    road_quality: Int!
+    travel_safety: Int!
+}
+
+input CreateFeatureInput {
+    geometry: [[Int!]!]!
+    reviewId: String!
+}
+
+input CreatePostInput {
+    content: String!
+    title: String!
+}
+
+input CreateReviewInput {
+    commentsId: [String!]
+    estimationId: String
+    featureId: String
+    title: String!
+}
+
+input GeometryBoundArgs {
+    bottomRightLat: Int
+    bottomRightLnt: Int
+    topLeftLat: Int
+    topLeftLng: Int
+}
+
+input GetFeaturesInput {
+    authorId: String
+    in_progress: Boolean
+}
+
+input GetReviewInput {
+    authorId: String!
+    in_progress: Boolean!
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+input PostOrder {
+    direction: OrderDirection!
+    field: PostOrderField!
+}
+
+input SignupInput {
+    email: String!
+    firstname: String
+    lastname: String
+    password: String!
+}
+
+input UpdateCommentInput {
+    authorId: String
+    id: String!
+    reviewId: String
+    text: String!
+}
+
+input UpdateEstimationInput {
+    estimationId: String!
+    road_congestion: Int!
+    road_quality: Int!
+    travel_safety: Int!
+}
+
+input UpdateFeatureInput {
+    featureId: String!
+    geometry: [[Int!]!]!
+}
+
+input UpdateReviewInput {
+    in_progress: Boolean!
+    reviewId: String!
+}
+
+input UpdateUserInput {
+    firstname: String
+    lastname: String
+}

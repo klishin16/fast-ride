@@ -1,0 +1,44 @@
+.registration {
+  &__container {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+    margin-top: 25vh;
+  }
+}
+
+[nz-form] {
+  min-width: 340px;
+}
+
+.phone-select {
+  width: 70px;
+}
+
+.register-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register-form-item {
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.register-form-control {
+  width: 100%;
+  &--button {
+    margin-top: 35px;
+    margin-bottom: 15px;
+  }
+}
+
+.register-form-button {
+  width: 100%;
+}

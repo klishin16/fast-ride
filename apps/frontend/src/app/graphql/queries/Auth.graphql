@@ -1,0 +1,21 @@
+mutation AuthLogin($data: LoginInput!) {
+  login(data: $data) {
+    accessToken
+    refreshToken
+    user {
+      id
+      email
+    }
+  }
+}
+
+mutation AuthSignup($data: SignupInput!) {
+  signup(data: $data) {
+    accessToken
+    refreshToken
+    user {
+      id
+      email
+    }
+  }
+}

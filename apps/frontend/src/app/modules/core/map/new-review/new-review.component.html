@@ -1,0 +1,88 @@
+<div class="stepper-container">
+  <nz-steps [nzCurrent]="currentStep.value" nzSize="small" class="stepper-header">
+    <nz-step nzTitle="Street"></nz-step>
+    <nz-step nzTitle="Review"></nz-step>
+    <nz-step nzTitle="Comments"></nz-step>
+  </nz-steps>
+
+  <div class="steps-content">
+    <div class="step-content" [ngSwitch]="currentStep.value">
+      <ng-container class="s" *ngSwitchCase="0" [ngTemplateOutlet]="firstStep"></ng-container>
+      <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="secondStep"></ng-container>
+      <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="thirdStep"></ng-container>
+      <ng-container *ngSwitchDefault> {{ index }} </ng-container>
+    </div>
+  </div>
+  <div class="steps-action">
+    <button nz-button nzType="default" (click)="pre()" [nzLoading]="reviewService.is_loading$.value" *ngIf="currentStep.value > 0">
+      <span>Previous</span>
+    </button>
+    <button nz-button nzType="default" (click)="next()" *ngIf="currentStep.value < 2">
+      <span>Next</span>
+    </button>
+    <button nz-button nzType="primary" (click)="done()" *ngIf="currentStep.value === 2">
+      <span>Done</span>
+    </button>
+  </div>
+</div>
+
+<ng-template #firstStep>
+  <div class="first-step__container">
+    <div class="first-step__selected-parts-item">
+      <span>Selected parts</span>
+      <nz-badge
+        nzStandalone
+        [nzCount]="reviewService.current_path_length"
+        [nzStyle]="{ backgroundColor: '#52c41a' }">
+      </nz-badge>
+    </div>
+    <div class="first-step__clear-path-item">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="clearSelectedPath()"
+        [disabled]="!reviewService.current_path_length"
+      >Clear selected path</button>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #secondStep>
+  <form nz-form class="second-step__form">
+    <nz-form-item class="second-step__form-item">
+      <nz-form-label class="second-step__form-label" nzFor="road_quality">Road quality</nz-form-label>
+      <nz-form-control class="second-step__form-control">
+        <nz-slider name="road_quality" id="road_quality" [nzMarks]="marks" [(ngModel)]="estimationFormModel.road_quality" [nzStep]="select_step"></nz-slider>
+      </nz-form-control>
+    </nz-form-item >
+
+    <nz-form-item class="second-step__form-item">
+      <nz-form-label class="second-step__form-label" nzFor="travel_safety">Travel safety</nz-form-label>
+      <nz-form-control class="second-step__form-control">
+        <nz-slider name="travel_safety" id="travel_safety" [nzMarks]="marks" [(ngModel)]="estimationFormModel.travel_safety" [nzStep]="select_step"></nz-slider>
+      </nz-form-control>
+    </nz-form-item >
+
+    <nz-form-item class="second-step__form-item">
+      <nz-form-label class="second-step__form-label" nzFor="road_congestion">Road congestion</nz-form-label>
+      <nz-form-control class="second-step__form-control">
+        <nz-slider name="road_congestion" id="road_congestion" [nzMarks]="marks" [(ngModel)]="estimationFormModel.road_congestion" [nzStep]="select_step"></nz-slider>
+      </nz-form-control>
+    </nz-form-item >
+  </form>
+</ng-template>
+
+<ng-template #thirdStep>
+  <form nz-form class="third-step__form">
+    <nz-form-item class="third-step__form-item">
+      <nz-form-label class="third-step__form-label" nzFor="road_quality">Comment</nz-form-label>
+      <nz-form-control class="third-step__form-control">
+        <textarea name="comment" rows="4" nz-input [(ngModel)]="commentFormModel.text"></textarea>
+      </nz-form-control>
+    </nz-form-item >
+  </form>
+</ng-template>
+
+
+

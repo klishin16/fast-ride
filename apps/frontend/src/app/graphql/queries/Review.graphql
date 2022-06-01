@@ -1,0 +1,70 @@
+mutation CreateReview($data: CreateReviewInput!) {
+  createReview(data: $data) {
+    id
+  }
+}
+
+query Review($data: GetReviewInput!) {
+  review(data: $data) {
+    id
+    feature {
+      id
+      geometry
+    }
+    estimation {
+      id
+      travel_safety
+      road_quality
+      road_congestion
+    }
+    comments {
+      id
+      text
+    }
+  }
+}
+
+mutation UpdateReview($data: UpdateReviewInput!) {
+  updateReview(data: $data) {
+    id
+  }
+}
+
+query GetReviews($first: Int, $after: String) {
+  reviewsWithPagination(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        title
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    totalCount
+  }
+}
+
+query GetMyReviews($userId: String) {
+  reviews(userId: $userId) {
+    id
+    title
+    createdAt
+    updatedAt
+    feature {
+      id
+      topLeftLat
+      topLeftLng
+      bottomRightLat
+      bottomRightLnt
+    }
+    estimation {
+      id
+      road_congestion
+      road_quality
+      travel_safety
+    }
+    in_progress
+  }
+}

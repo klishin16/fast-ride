@@ -1,0 +1,58 @@
+<div class="feature_detail-container">
+  <div *ngIf="feature_view_service.current_feature$.value; else needSelect" class="feature_detail-grid">
+    <nz-divider id="estimation-header" nzText="Road estimation"></nz-divider>
+    <div id="travel_safety">Travel safety</div>
+    <div
+      id="travel_safety_value">{{feature_view_service.current_feature$.value.review?.estimation?.travel_safety}}</div>
+    <div id="road_congestion">Road congestion</div>
+    <div
+      id="road_congestion_value">{{feature_view_service.current_feature$.value.review?.estimation?.road_congestion}}</div>
+    <div id="road_quality">Road_quality</div>
+    <div id="road_quality_value">{{feature_view_service.current_feature$.value.review?.estimation?.road_quality}}</div>
+    <div id="comments">
+      <nz-divider nzText="Comments"></nz-divider>
+      <div class="comments-list-container"
+        *ngIf="this.feature_view_service.current_comments$.value || this.feature_view_service.comments_loading$.value; else noComments">
+        <nz-list class="comments-list"
+                 [nzDataSource]="this.feature_view_service.current_comments$.value"
+                 [nzRenderItem]="item"
+                 [nzItemLayout]="'horizontal'"
+                 [nzLoading]="feature_view_service.comments_loading$ | async"
+        >
+          <ng-template #item let-item>
+            <nz-comment [nzAuthor]="item.author?.email" [nzDatetime]="(item.updatedAt | date) || 'Sometime'">
+              <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
+              <nz-comment-content>
+                <p>{{ item.text }}</p>
+              </nz-comment-content>
+            </nz-comment>
+          </ng-template>
+        </nz-list>
+      </div>
+      <ng-template #noComments>
+        There is no comments for review!
+      </ng-template>
+    </div>
+    <div id="add_comment">
+      <nz-divider nzText="Add comment"></nz-divider>
+      <nz-form-item>
+        <textarea
+          [(ngModel)]="new_comment_text"
+          nz-input
+          [nzAutosize]="{ minRows: 2, maxRows: 4 }"
+        ></textarea>
+      </nz-form-item>
+      <nz-form-item>
+        <button nz-button nzType="primary"
+                [nzLoading]="feature_view_service.new_comment_loading$ | async"
+                [disabled]="!new_comment_text"
+                (click)="handleSubmitNewComment()"
+        >Add Comment
+        </button>
+      </nz-form-item>
+    </div>
+  </div>
+  <ng-template #needSelect>
+    Please select road
+  </ng-template>
+</div>

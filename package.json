@@ -1,0 +1,28 @@
+{
+  "name": "fast-ride",
+  "version": "0.3.0",
+  "main": "index.js",
+  "author": "klishin_nd",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/backend",
+      "apps/frontend"
+    ],
+    "nohoist": [
+      "**/@nestjs", "**/@nestjs/**",
+      "**/graphql", "**/graphql/**",
+      "**/graphql-scalars", "**/graphql-scalars/**",
+      "**/graphql-subscriptions", "**/graphql-subscriptions/**"]
+  },
+
+  "scripts": {
+    "start:dev": "concurrently \"yarn run start:dev:backend\" \"yarn run start:dev:frontend\"",
+    "start:dev:backend": "yarn --cwd apps/backend start",
+    "start:dev:frontend": "yarn --cwd apps/frontend start",
+    "db:start": "yarn --cwd app/backend prisma:start:db",
+
+    "start:prod:backend": "yarn --cwd apps/backend start:remote"
+  }
+}

@@ -1,0 +1,12 @@
+<div class="map-page__container">
+  <nz-card class="mapbox-card" [nzBodyStyle]='{"padding": 0, "height": "100%" }'>
+    <div #mapboxContainer class="mapbox-container"></div>
+  </nz-card>
+  <nz-card [hidden]="!(layoutService.isNewReviewOpened$ | async)" class="new-review-card" [nzBodyStyle]='{"height": "100%" }'>
+    <app-new-review></app-new-review>
+  </nz-card>
+
+  <nz-card [hidden]="!(layoutService.isFeatureDetailOpened$ | async)" class="feature-detail-card" [nzBodyStyle]='{"height": "100%" }'>
+    <app-feature-detail></app-feature-detail>
+  </nz-card>
+</div>

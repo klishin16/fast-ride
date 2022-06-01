@@ -25,7 +25,7 @@
 
     "start:prod:backend": "yarn --cwd apps/backend start:remote",
 
-    "build:prod:backend": "yarn --cwd apps/backend build",
+    "build:prod:backend": "yarn --cwd apps/backend production:build",
     "execute:prod:backend": "yarn --cwd apps/backend production:execute"
   }
 }

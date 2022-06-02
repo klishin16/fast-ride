@@ -21,10 +21,6 @@ import { join } from 'path';
       // validationSchema: validationSchema
     }),
 
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../../frontend/dist/client')
-    }),
-
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       useClass: GqlConfigService,

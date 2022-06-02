@@ -4,9 +4,11 @@ import { ApolloClientOptions, ApolloLink, InMemoryCache } from "@apollo/client/c
 import {HttpLink} from 'apollo-angular/http';
 import { StorageService } from "./services/storage.service";
 import { setContext } from "@apollo/client/link/context";
+import {environment} from "../environments/environment";
 // import { onError } from "@apollo/client/link/error";
 
-const uri = "/graphql"; // <-- add the URL of the GraphQL server here
+const url = environment.backend_url
+console.log('Backend url:', url); // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const basic = setContext((operation, context) => ({
     headers: {
@@ -40,7 +42,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   // });
 
   return {
-    link: ApolloLink.from([basic, auth, httpLink.create({uri})]),
+    link: ApolloLink.from([basic, auth, httpLink.create({uri: url})]),
     cache: new InMemoryCache(),
   };
 }

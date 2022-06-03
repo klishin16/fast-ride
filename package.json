@@ -1,34 +1,36 @@
 {
   "name": "fast-ride",
-  "version": "0.3.0",
-  "main": "index.js",
   "author": "klishin_nd",
   "license": "MIT",
   "private": true,
   "workspaces": {
     "packages": [
-      "apps/backend",
-      "apps/frontend"
-    ],
-    "nohoist": [
-      "**/@nestjs", "**/@nestjs/**",
-      "**/graphql", "**/graphql/**",
-      "**/graphql-scalars", "**/graphql-scalars/**",
-      "**/graphql-subscriptions", "**/graphql-subscriptions/**"]
+      "packages/*"
+    ]
   },
-
   "scripts": {
     "start:dev": "concurrently \"yarn run start:dev:backend\" \"yarn run start:dev:frontend\"",
-    "start:dev:backend": "yarn --cwd apps/backend start",
-    "start:dev:frontend": "yarn --cwd apps/frontend start",
+    "start:dev:backend": "yarn --cwd packages/backend start",
+    "start:dev:frontend": "yarn --cwd packages/frontend start",
     "db:start": "yarn --cwd app/backend prisma:start:db",
-
     "start:prod:backend": "yarn --cwd apps/backend start:prod",
-
     "build:prod:backend": "yarn --cwd apps/backend production:build",
     "execute:prod:backend": "yarn --cwd apps/backend production:execute",
-
     "deploy:heroku": "yarn --cwd apps/frontend build; yarn --cwd apps/backend production:build; node apps/backend/dist/src/main.js ",
     "deploy:backend:heroku": "yarn --cwd apps/backend production:build; node apps/backend/dist/src/main.js "
-  }
+  },
+  "devDependencies": {
+    "@types/node": "16.11.0",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "8.7.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "lerna": "^5.0.0",
+    "typescript": "4.5.4"
+  },
+  "resolutions": {
+    "graphql": "15.8.0"
+  },
+  "packageManager": "yarn@3.2.1"
 }

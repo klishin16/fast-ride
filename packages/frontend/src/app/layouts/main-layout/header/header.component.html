@@ -1,0 +1,42 @@
+<nz-header>
+  <div class="app-header header">
+    <div class="header__left-group">
+      <span class="header-trigger" (click)="layoutService.toggleSidebar()">
+            <i class="trigger"
+               nz-icon
+               [nzType]="(layoutService.isSidebarCollapsed$ | async) ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+        </span>
+    </div>
+    <div class="header__right-group">
+      <div class="header__actions-container">
+<!--  TODO maybe add mapActionsContainer      -->
+        <button nz-button
+                *ngIf="(layoutService.currentView$ | async)?.name === 'Map' && (roadsViewService.is_roads_map_shown$ | async)"
+                (click)="layoutService.toggleFeatureDetailWindow()"
+        >Show detail information</button>
+        <button nz-button
+                *ngIf="(layoutService.currentView$ | async)?.name === 'Map'"
+                [nzLoading]="roadsViewService.is_roads_loading$ | async"
+                (click)="roadsViewService.toggleRoads()"
+        >{{roadsViewService.is_roads_map_shown$.value ? 'Hide roads map' : 'Show roads map'}}</button>
+        <button nz-button *ngIf="(layoutService.currentView$ | async)?.name === 'Map'" (click)="layoutService.toggleNewReviewWindow()">New review</button>
+      </div>
+      <div class="header-profile">
+        <nz-avatar
+          class="header-profile__avatar"
+          nzIcon="user"
+          nz-popover
+          [nzPopoverTitle]="usersService.current_user$.value?.email ? usersService.current_user$.value!.email : 'Not selected'"
+          [nzPopoverContent]="profileTemplate"
+          nzPopoverPlacement="bottomRight"
+        ></nz-avatar>
+        <ng-template #profileTemplate>
+          <div>
+            <button nz-button nzType="default" nzDanger (click)="authService.logout()">Logout</button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nz-header>

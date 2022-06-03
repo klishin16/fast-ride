@@ -1,0 +1,28 @@
+mutation CreateEstimation($data: CreateEstimationInput!) {
+  createEstimation(data: $data) {
+    id
+    road_congestion
+    road_quality
+    travel_safety
+  }
+}
+
+mutation UpdateEstimation($data: UpdateEstimationInput!) {
+  updateEstimation(data: $data) {
+    id
+    road_congestion
+    road_quality
+    travel_safety
+  }
+}
+
+mutation UpdateFeature($data: UpdateFeatureInput!) {
+  updateFeature(data: $data) {
+    id
+    topLeftLat
+    topLeftLng
+    bottomRightLat
+    bottomRightLnt
+    geometry
+  }
+}

@@ -1,0 +1,110 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  email String [unique, not null]
+  password String [not null]
+  firstname String
+  lastname String
+  posts Post [not null]
+  reviews Review [not null]
+  role Role [not null]
+  comments Comment [not null]
+  likes CommentLike [not null]
+}
+
+Table Post {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  published Boolean [not null]
+  title String [not null]
+  content String
+  author User
+  authorId String
+}
+
+Table Review {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  title String
+  author User [not null]
+  authorId String [not null, default: 'cl1mo5hxv0021wvvr0op0tn5a']
+  feature Feature
+  estimation Estimation
+  comments Comment [not null]
+  in_progress Boolean [not null, default: true]
+}
+
+Table Feature {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  review Review [not null]
+  reviewId String [unique, not null]
+  topLeftLng Int [not null]
+  topLeftLat Int [not null]
+  bottomRightLnt Int [not null]
+  bottomRightLat Int [not null]
+  geometry Json [not null]
+  mapId Int [increment, not null]
+}
+
+Table Estimation {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  review Review
+  reviewId String [unique, not null]
+  road_quality Int [not null, default: 0]
+  travel_safety Int [not null, default: 0]
+  road_congestion Int [not null, default: 0]
+}
+
+Table Comment {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  text String [not null]
+  author User
+  authorId String
+  review Review
+  reviewId String
+  likes CommentLike [not null]
+}
+
+Table CommentLike {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  author User
+  authorId String [not null]
+  comment Comment [not null]
+  commentId String [not null]
+}
+
+Enum Role {
+  ADMIN
+  USER
+}
+
+Ref: Post.authorId > User.id
+
+Ref: Review.authorId > User.id
+
+Ref: Feature.reviewId - Review.id
+
+Ref: Estimation.reviewId - Review.id
+
+Ref: Comment.authorId > User.id
+
+Ref: Comment.reviewId > Review.id
+
+Ref: CommentLike.authorId > User.id
+
+Ref: CommentLike.commentId > Comment.id

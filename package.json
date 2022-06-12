@@ -38,5 +38,5 @@
   "resolutions": {
     "graphql": "15.8.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@1.22.19"
 }

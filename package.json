@@ -16,13 +16,9 @@
     "start:front:local:dev": "lerna exec --scope frontend -- yarn run start:dev",
     "start:back:local:dev": "lerna exec --scope backend -- yarn run start:dev",
     "start:db": "yarn --cwd app/backend prisma:start:db TODO",
-
     "start:back:prod": "lerna exec --scope backend -- yarn run start:prod",
-
     "build:back:prod": "lerna exec --scope backend -- yarn run build:production",
-
     "execute:back:prod": "lerna exec --scope backend -- yarn run execute:production",
-
     "deploy:back:heroku": "yarn --cwd packages/backend production:build; node packages/backend/dist/src/main.js "
   },
   "devDependencies": {

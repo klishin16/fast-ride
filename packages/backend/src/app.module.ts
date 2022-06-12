@@ -26,6 +26,10 @@ import { join } from 'path';
       useClass: GqlConfigService,
     }),
 
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'frontend'),
+    }),
+
     AuthModule,
     UsersModule,
     PostsModule,

@@ -20,7 +20,7 @@
     "build:back:prod": "lerna exec --scope backend -- yarn run build:production",
     "execute:back:prod": "lerna exec --scope backend -- yarn run execute:production",
     "deploy:backend:heroku": "lerna exec --scope backend -- yarn run build:production; node dist/src/main.js",
-    "deploy:back:heroku": "lerna exec --scope backend -- yarn prisma generate -- yarn build:production -- yarn node dist/src/main.js "
+    "deploy:back:heroku": "lerna exec --scope backend -- yarn prisma generate; lerna exec --scope backend -- yarn build:production; lerna exec --scope backend -- yarn node dist/src/main.js "
   },
   "devDependencies": {
     "@types/node": "16.11.0",

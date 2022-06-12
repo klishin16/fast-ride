@@ -44,9 +44,9 @@ async function bootstrap() {
   }
 
   // Cors
-  // if (corsConfig.enabled) {
-  //   app.enableCors();
-  // }
+  if (corsConfig.enabled) {
+    app.enableCors();
+  }
 
   if (configService.get('show_config_on_start')) {
     console.info(configService)

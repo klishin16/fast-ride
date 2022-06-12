@@ -29,6 +29,13 @@ query GetFeatures($first: Int, $after: String) {
         topLeftLng
         bottomRightLat
         bottomRightLnt
+        review {
+          estimation {
+            road_congestion
+            road_quality
+            travel_safety
+          }
+        }
       }
     }
     pageInfo {

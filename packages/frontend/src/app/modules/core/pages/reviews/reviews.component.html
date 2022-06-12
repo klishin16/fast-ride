@@ -1,6 +1,6 @@
 <nz-table #basicTable
           nzShowSizeChanger
-          [nzData]="tableData$.value"
+          [nzData]="tableData"
           [nzFrontPagination]="false"
           [nzLoading]="is_loading$ | async"
           [nzTotal]="totalPages"
@@ -17,7 +17,7 @@
 </thead>
 <tbody>
 <tr *ngFor="let data of basicTable.data">
-  <ng-container *ngIf="!editCache[data.id]?.edit; else editTemplate">
+  <ng-container *ngIf="!editCache.get(data.id)!?.edit; else editTemplate">
     <td>{{ data.id }}</td>
     <td>{{ data.title }}</td>
     <td>
@@ -27,8 +27,8 @@
     </td>
   </ng-container>
   <ng-template #editTemplate>
-    <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.id" /></td>
-    <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.title" /></td>
+    <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.id" /></td>
+    <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.title" /></td>
     <td>
       <a (click)="saveEdit(data.id)" class="save">Save</a>
       <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>

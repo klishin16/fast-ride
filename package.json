@@ -9,15 +9,21 @@
     ]
   },
   "scripts": {
-    "start:dev": "concurrently \"yarn run start:dev:backend\" \"yarn run start:dev:frontend\"",
-    "start:dev:backend": "yarn --cwd packages/backend start",
-    "start:dev:frontend": "yarn --cwd packages/frontend start",
-    "db:start": "yarn --cwd app/backend prisma:start:db",
-    "start:prod:backend": "yarn --cwd apps/backend start:prod",
-    "build:prod:backend": "yarn --cwd apps/backend production:build",
-    "execute:prod:backend": "yarn --cwd apps/backend production:execute",
-    "deploy:heroku": "yarn --cwd apps/frontend build; yarn --cwd apps/backend production:build; node apps/backend/dist/src/main.js ",
-    "deploy:backend:heroku": "yarn --cwd apps/backend production:build; node apps/backend/dist/src/main.js "
+    "start:local": "lerna exec -- yarn run start",
+    "start:local:dev": "lerna exec -- yarn run start:dev",
+    "start:front:local": "lerna exec --scope frontend -- yarn run start",
+    "start:back:local": "lerna exec --scope backend -- yarn run start",
+    "start:front:local:dev": "lerna exec --scope frontend -- yarn run start:dev",
+    "start:back:local:dev": "lerna exec --scope backend -- yarn run start:dev",
+    "start:db": "yarn --cwd app/backend prisma:start:db TODO",
+
+    "start:back:prod": "lerna exec --scope backend -- yarn run start:prod",
+
+    "build:back:prod": "lerna exec --scope backend -- yarn run build:production",
+
+    "execute:back:prod": "lerna exec --scope backend -- yarn run execute:production",
+
+    "deploy:back:heroku": "yarn --cwd packages/backend production:build; node packages/backend/dist/src/main.js "
   },
   "devDependencies": {
     "@types/node": "16.11.0",

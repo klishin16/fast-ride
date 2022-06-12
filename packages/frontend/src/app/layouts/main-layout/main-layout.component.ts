@@ -3,6 +3,7 @@ import { MapService } from "../../services/map/map.service";
 import { debounceTime, distinctUntilChanged, merge } from "rxjs";
 import { MainLayoutService } from "../../services/main-layout.service";
 import {UsersService} from "../../services/users.service";
+import {Role} from "../../graphql/generated/schema";
 
 
 export interface SidebarNavigationItem {
@@ -10,14 +11,8 @@ export interface SidebarNavigationItem {
   path?: string,
   icon?: string,
   children?: Array<SidebarNavigationItem>,
-  access?: Array<EAccessRoles>
+  access?: Array<Role>
 }
-
-export enum EAccessRoles {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
-}
-
 
 @Component({
   selector: 'app-main-layout',
@@ -40,7 +35,7 @@ export class MainLayoutComponent  {
     {
       name: 'Admin',
       icon: 'user',
-      access: [EAccessRoles.ADMIN],
+      access: [Role.Admin],
       children: [
         {
           name: 'Users',

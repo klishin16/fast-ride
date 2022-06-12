@@ -34,7 +34,7 @@ export class PrismaService
     super({
       datasources: {
         db: {
-          url: `postgresql://${configService.get('database.user')}:${configService.get('database.password')}@${configService.get('database.host')}:${configService.get('database.port')}/${configService.get('database.schema')}?schema=public`
+          url: `postgresql://${configService.get('database.user')}:${configService.get('database.password')}@${configService.get('database.host')}:${configService.get('database.port')}/${configService.get('database.name')}?schema=${configService.get('database.schema')}`
         }
       },
       log: [
@@ -43,7 +43,7 @@ export class PrismaService
         { level: 'error', emit: 'event' },
       ],
     });
-    console.info("Prisma connection url:", `postgresql://${configService.get('database.user')}:${configService.get('database.password')}@${configService.get('database.host')}:${configService.get('database.port')}/${configService.get('database.schema')}?schema=public`)
+    console.info("Prisma connection url:", `postgresql://${configService.get('database.user')}:${configService.get('database.password')}@${configService.get('database.host')}:${configService.get('database.port')}/${configService.get('database.name')}?schema=${configService.get('database.schema')}`)
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.$on('warn', (e) => {

@@ -5,6 +5,7 @@ mutation AuthLogin($data: LoginInput!) {
     user {
       id
       email
+      roles
     }
   }
 }
@@ -16,7 +17,7 @@ mutation AuthSignup($data: SignupInput!) {
     user {
       id
       email
-      role
+      roles
     }
   }
 }

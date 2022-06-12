@@ -1,6 +1,6 @@
 <nz-table #basicTable
           nzShowSizeChanger
-          [nzData]="tableData$.value"
+          [nzData]="tableData"
           [nzFrontPagination]="false"
           [nzLoading]="is_loading$ | async"
           [nzTotal]="totalPages"
@@ -14,17 +14,19 @@
     <th>Email</th>
     <th>First name</th>
     <th>Last name</th>
+    <th>Roles</th>
     <th>Created at</th>
     <th>Action</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let data of basicTable.data">
-    <ng-container *ngIf="!editCache[data.id]?.edit; else editTemplate">
+    <ng-container *ngIf="!editCache.get(data.id)!?.edit; else editTemplate">
       <td>{{ data.id }}</td>
       <td>{{ data.email }}</td>
       <td>{{ data.firstname }}</td>
       <td>{{ data.lastname }}</td>
+      <td>{{ data.roles }}</td>
       <td>{{ data.createdAt }}</td>
       <td>
         <a (click)="startEdit(data.id)">Edit</a>
@@ -33,11 +35,23 @@
       </td>
     </ng-container>
     <ng-template #editTemplate>
-      <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.id" /></td>
-      <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.email" /></td>
-      <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.firstname" /></td>
-      <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.lastname" /></td>
-      <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.createdAt" /></td>
+      <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.id"/></td>
+      <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.email"/></td>
+      <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.firstname"/></td>
+      <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.lastname"/></td>
+      <td>
+        <nz-select
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="tagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Please select"
+          [(ngModel)]="editCache.get(data.id)!.data.roles"
+        >
+          <nz-option *ngFor="let item of listOfRoles" [nzLabel]="item" [nzValue]="item"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+      </td>
+      <td><input type="text" nz-input [(ngModel)]="editCache.get(data.id)!.data.createdAt"/></td>
       <td>
         <a (click)="saveEdit(data.id)" class="save">Save</a>
         <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>

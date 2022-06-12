@@ -34,7 +34,7 @@ export class AuthResolver {
         email.toLowerCase(),
         password
       );
-  
+
       return {
         accessToken,
         refreshToken,

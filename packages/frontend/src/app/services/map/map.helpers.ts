@@ -35,7 +35,11 @@ export const geoJsonPointToDbPoint = (geo_point: [number, number]): [number, num
 }
 
 export const generateFeatureColor = (review: Review) => {
-  return Math.round((review.estimation!.road_quality + review.estimation!.road_congestion + review.estimation!.travel_safety) / 100)
+  if (review.estimation) {
+    return Math.round((review.estimation.road_quality + review.estimation.road_congestion + review.estimation.travel_safety) / 100)
+  } else {
+    return -1
+  }
 }
 
 export const appendPathToPath = (origin_path: [[number, number]], path_to_append: [[number, number]]): [[number, number]] => {

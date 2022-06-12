@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { StorageService } from "./storage.service";
-import { Apollo, gql } from "apollo-angular";
+import {Injectable} from "@angular/core";
+import {StorageService} from "./storage.service";
+import {Apollo, gql} from "apollo-angular";
 import jwt_decode from "jwt-decode";
 import {
   BehaviorSubject,
@@ -14,11 +14,12 @@ import {
   ObservableInput, of,
   tap
 } from "rxjs";
-import { NzNotificationService } from "ng-zorro-antd/notification";
-import { UsersService } from "./users.service";
-import { Logger } from "./logger/logger";
-import { Router } from "@angular/router";
-import { AuthLoginGQL, AuthSignupGQL } from "../graphql/generated/schema";
+import {NzNotificationService} from "ng-zorro-antd/notification";
+import {UsersService} from "./users.service";
+import {Logger} from "./logger/logger";
+import {Router} from "@angular/router";
+import {AuthLoginGQL, AuthSignupGQL} from "../graphql/generated/schema";
+import {GraphQLError} from "graphql";
 
 interface IAccessToken {
   userId: string;
@@ -95,12 +96,15 @@ export class AuthService {
               tap((d) => this.is_loading$.next(d.loading))
             )
           );
-          if (updatedTokens.data) {
-            const { accessToken, refreshToken } = updatedTokens.data as IRefreshTokenResp;
+          if (updatedTokens.data && (updatedTokens.data as IRefreshTokenResp).accessToken && (updatedTokens.data as IRefreshTokenResp).refreshToken) {
+            const {accessToken, refreshToken} = updatedTokens.data as IRefreshTokenResp;
             StorageService.setCookie("accessToken", accessToken);
             StorageService.setCookie("refreshToken", refreshToken);
 
             return true;
+          } else {
+            this.logger.error('Access or refresh token not received')
+            return false
           }
         } else {
           return true;
@@ -156,14 +160,11 @@ export class AuthService {
           return;
         }
 
-        const { accessToken, refreshToken, user } = response.data!.signup;
+        const {accessToken, refreshToken, user} = response.data!.signup;
         StorageService.setCookie("accessToken", accessToken);
         StorageService.setCookie("refreshToken", refreshToken);
         this.is_authenticated$.next(true);
-        this.userService.current_user$.next({
-          ...user,
-          roles: [user.role]
-        });
+        this.userService.current_user$.next(user);
         this.router.navigate(["/app"]);
       });
   }
@@ -177,37 +178,31 @@ export class AuthService {
         password
       }
     }).pipe(
-      tap(result => this.is_loading$.next(result.loading)),
-      filter(result => !result.loading),
-      // @ts-ignore
-      catchError((e) => {
+     catchError(err => {
+       throw new Error(JSON.stringify(err.graphQLErrors.flatMap((err: GraphQLError) => Object.values((err.extensions)).flatMap(value => value.message))
+         .filter((v: any) => v).join('; ')))
+     })
+    ).subscribe({
+      next: (response) => {
         this.is_loading$.next(false)
+        const loginData = response.data!.login;
+        const {accessToken, refreshToken, user} = loginData;
+        StorageService.setCookie("accessToken", accessToken);
+        StorageService.setCookie("refreshToken", refreshToken);
+        this.is_authenticated$.next(true);
+        this.userService.current_user$.next(user);
+        this.router.navigate(["/app"]);
+      },
+      error: (err) => {
+        this.is_loading$.next(false)
+        console.log(err)
         this.notificationService.error(
-          "Login",
-          e
-        );
-        return EMPTY
-      })
-    ).subscribe(response => {
-      if (response.errors) {
-        this.notificationService.error(
-          "Login",
-          "Cannot login"
-        );
-
-        return;
-      }
-      const loginData = response.data!.login;
-      const { accessToken, refreshToken, user } = loginData;
-      StorageService.setCookie("accessToken", accessToken);
-      StorageService.setCookie("refreshToken", refreshToken);
-      this.is_authenticated$.next(true);
-      this.userService.current_user$.next({
-        ...user,
-        roles: [] //TODO
-      });
-      this.router.navigate(["/app"]);
-    });
+          "Cannot login",
+          err
+          );
+      },
+      complete: console.info
+    })
   }
 
   public async logout() {

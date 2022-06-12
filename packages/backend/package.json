@@ -18,14 +18,15 @@
     "url": "https://github.com/fivethree-team/nestjs-prisma-client-example/issues"
   },
   "scripts": {
-    "dev:build": "nest build",
-    "production:build": "NODE_ENV=production; nest build",
+    "build:production": "NODE_ENV=production; nest build",
     "start": "NODE_ENV=development nest start",
     "start:prod": "NODE_ENV=production nest start",
     "start:dev": "NODE_ENV=development; nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "production:execute": "NODE_ENV=production; node dist/src/main.js",
-    "migrate:dev": "NODE_ENV=development; prisma migrate dev --preview-feature",
+
+    "execute:production": "NODE_ENV=production; node dist/src/main.js",
+
+    "migrate:dev": "yarn dotenv -e config/env/db.dev.env prisma migrate dev --preview-feature",
     "migrate:dev:create": "yarn env-cmd --file config/env/db.env prisma migrate dev --create-only --preview-feature",
     "migrate:reset": "prisma migrate reset --preview-feature",
     "migrate:deploy": "npx env-cmd --file config/env/db.env prisma migrate deploy --preview-feature",

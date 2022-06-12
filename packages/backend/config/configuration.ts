@@ -14,6 +14,7 @@ export const configuration = () => (<IConfig>{
     user: process.env.POSTGRES_USER || 'prisma',
     port: parseInt(process.env.DB_PORT, 10) || 5432,
     password: process.env.POSTGRES_PASSWORD || 'topsecret',
+    name: process.env.DB_NAME || 'postgres',
     schema: process.env.DB_SCHEMA || 'fast-rider',
   },
   swagger: {

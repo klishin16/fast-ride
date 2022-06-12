@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:knd.02054782@db.mkfvyyrgjmplybxfertd.supabase.co:5432/postgres?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -22,7 +22,7 @@ model User {
   lastname  String?
   posts     Post[]
   reviews   Review[]
-  role      Role
+  roles     Role[]
   comments  Comment[]
   likes     CommentLike[]
 }

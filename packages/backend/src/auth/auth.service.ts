@@ -25,6 +25,7 @@ export class AuthService {
   ) {}
 
   async createUser(payload: SignupInput): Promise<Token> {
+    this.logger.log('createUser'); //TODO декоратор логера
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     );
@@ -34,7 +35,7 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
-          role: 'USER',
+          roles: ['USER'],
         },
       });
 
@@ -54,8 +55,8 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<Token> {
+    this.logger.log('login');
     const user = await this.prisma.user.findUnique({ where: { email } });
-
     if (!user) {
       throw new NotFoundException(`No user found for email: ${email}`);
     }

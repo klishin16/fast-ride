@@ -138,8 +138,6 @@ type Query {
     estimations: [Estimation!]!
     features(bounds: GeometryBoundArgs!, data: GetFeaturesInput!): [Feature!]!
     featuresWithPagination(after: String, before: String, first: Int, last: Int, query: String, skip: Int): FeatureConnection!
-    hello(name: String!): String!
-    helloWorld: String!
     me: User!
     post(postId: String!): Post!
     publishedPosts(after: String, before: String, first: Int, last: Int, orderBy: PostOrder, query: String, skip: Int): PostConnection!
@@ -194,7 +192,7 @@ type User {
     id: ID!
     lastname: String
     posts: [Post!]!
-    role: Role!
+    roles: Role!
     "Identifies the date and time when the object was last updated."
     updatedAt: DateTime!
 }
@@ -334,4 +332,5 @@ input UpdateReviewInput {
 input UpdateUserInput {
     firstname: String
     lastname: String
+    roles: [Role!]
 }

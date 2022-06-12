@@ -6,8 +6,10 @@ import { Comment } from './models/comment.model';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { GraphQLError } from 'graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { Logger } from '@nestjs/common';
+import {Logger, UseGuards} from '@nestjs/common';
 import { UpdateCommentInput } from './dto/update-comment.input';
+import {GqlAuthGuard} from "../auth/gql-auth.guard";
+import {Roles} from "../auth/roles.decorator";
 
 @Resolver()
 export class CommentsResolver {
@@ -105,5 +107,16 @@ export class CommentsResolver {
       () => this.prisma.comment.count(),
       { first, last, before, after }
     );
+  }
+
+  @UseGuards(GqlAuthGuard)
+  async removeComment(@Args('comment_id') comment_id: string) {
+    return this.prisma.comment.delete(
+      {
+        where: {
+          id: comment_id
+        }
+      }
+    )
   }
 }

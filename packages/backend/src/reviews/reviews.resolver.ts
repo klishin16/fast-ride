@@ -23,6 +23,7 @@ import { UpdateEstimationInput } from './dto/update-estimation.input';
 import { UpdateFeatureInput } from './dto/update-feature.input';
 import { GetFeaturesInput } from './dto/get-features.input';
 
+
 const pubSub = new PubSub();
 
 @Resolver()
@@ -66,34 +67,6 @@ export class ReviewsResolver {
           where: {
             title: { contains: query || '' },
           },
-        }),
-      { first, last, before, after }
-    );
-  }
-
-  @Query(() => [Feature])
-  public async features(
-    @Args({ name: 'bounds', type: () => GeometryBoundArgs })
-    geometryBoundArgs: GeometryBoundArgs,
-    @Args('data') data: GetFeaturesInput
-  ) {
-    return this.reviewsService.getFeatures(geometryBoundArgs, data);
-  }
-
-  @Query(() => FeatureConnection)
-  public async featuresWithPagination(
-    @Args() { after, before, first, last }: PaginationArgs,
-    @Args({ name: 'query', type: () => String, nullable: true }) query: string
-  ) {
-    return await findManyCursorConnection(
-      (args) =>
-        this.prisma.feature.findMany({
-          where: {},
-          ...args,
-        }),
-      () =>
-        this.prisma.feature.count({
-          where: {},
         }),
       { first, last, before, after }
     );
@@ -150,6 +123,46 @@ export class ReviewsResolver {
     return this.reviewsService.updateFeature(featureId, featureData);
   }
 
+  @Query(() => [Feature])
+  public async features(
+    @Args({ name: 'bounds', type: () => GeometryBoundArgs })
+      geometryBoundArgs: GeometryBoundArgs,
+    @Args('data') data: GetFeaturesInput
+  ) {
+    return this.reviewsService.getFeatures(geometryBoundArgs, data);
+  }
+
+  @Query(() => FeatureConnection)
+  public async featuresWithPagination(
+    @Args() { after, before, first, last }: PaginationArgs,
+    @Args({ name: 'query', type: () => String, nullable: true }) query: string
+  ) {
+    return await findManyCursorConnection(
+      (args) =>
+        this.prisma.feature.findMany({
+          where: {},
+          ...args,
+        }),
+      () =>
+        this.prisma.feature.count({
+          where: {},
+        }),
+      { first, last, before, after }
+    );
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Feature)
+  async removeFeature(@Args('feature_id') feature_id: string) {
+    return this.prisma.feature.delete(
+      {
+        where: {
+          id: feature_id
+        }
+      }
+    )
+  }
+
   // ================================= ESTIMATION ===========================
   @Mutation(() => Estimation)
   public async createEstimation(@Args('data') data: CreateEstimationInput) {
@@ -166,5 +179,17 @@ export class ReviewsResolver {
   @Query(() => [Estimation])
   public async estimations() {
     return this.prisma.estimation.findMany();
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Estimation)
+  public async removeEstimation(@Args('estimation_id') estimation_id: string) {
+    return this.prisma.estimation.delete(
+      {
+        where: {
+          id: estimation_id
+        }
+      }
+    )
   }
 }

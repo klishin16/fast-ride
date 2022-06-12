@@ -2,6 +2,6 @@ query Me {
   me {
     id
     email
-    role
+    roles
   }
 }

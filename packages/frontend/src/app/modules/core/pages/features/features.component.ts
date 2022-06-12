@@ -23,5 +23,14 @@ export class FeaturesComponent extends BaseTableComponent<QFeature, QFeatureEdge
     return this.featuresGQL.fetch({first, after})
   }
 
+  deleteData(data_id: string): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+
+  // @ts-ignore
+  updateData(data: QFeature) {
+    return Promise.resolve({});
+  }
+
 
 }

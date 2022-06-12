@@ -24,4 +24,13 @@ export class ReviewsComponent extends BaseTableComponent<QReview, QReviewEdge>  
     return this.getReviewsGQL.fetch({first, after})
   }
 
+  deleteData(data_id: string): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+
+  // @ts-ignore
+  updateData(data: QReview) {
+    return Promise.resolve({});
+  }
+
 }

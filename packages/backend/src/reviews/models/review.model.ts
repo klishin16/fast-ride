@@ -14,5 +14,8 @@ export class Review extends BaseModel {
 
   comments: Comment[];
 
+  @Field({ nullable: true })
+  authorId: string
+
   in_progress: boolean;
 }

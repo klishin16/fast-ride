@@ -6,6 +6,7 @@ query GetUsers($first: Int, $after: String) {
         email
         firstname
         lastname
+        roles
         createdAt
         updatedAt
       }
@@ -15,5 +16,14 @@ query GetUsers($first: Int, $after: String) {
       hasNextPage
     }
     totalCount
+  }
+}
+
+mutation UpdateUser($data: UpdateUserInput!) {
+  updateUser(data: $data) {
+    id
+    firstname
+    lastname
+    roles
   }
 }

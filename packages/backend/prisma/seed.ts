@@ -14,7 +14,7 @@ async function main() {
       firstname: 'Lisa',
       lastname: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-      role: 'USER',
+      roles: ['USER'],
       posts: {
         create: {
           title: 'Join us for Prisma Day 2019 in Berlin',
@@ -29,7 +29,7 @@ async function main() {
       email: 'bart@simpson.com',
       firstname: 'Bart',
       lastname: 'Simpson',
-      role: 'ADMIN',
+      roles: ['ADMIN'],
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       posts: {
         create: [
@@ -52,7 +52,7 @@ async function main() {
       email: 'bart2@simpson.com',
       firstname: 'Bart',
       lastname: 'Simpson',
-      role: 'ADMIN',
+      roles: ['ADMIN'],
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       posts: {
         create: [

@@ -17,6 +17,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PaginationArgs } from '../common/pagination/pagination.args';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { UsersConnection } from './dto/users-connection';
+import {RolesGuard} from "../auth/roles.guard";
+import {Roles} from "../auth/roles.decorator";
 
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
@@ -51,6 +53,19 @@ export class UsersResolver {
       user.password,
       changePassword
     );
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Roles('ADMIN')
+  @Mutation(() => User)
+  async removeUser(@Args('user_id') user_id: string) {
+    return this.prisma.user.delete(
+      {
+        where: {
+          id: user_id
+        }
+      }
+    )
   }
 
   @ResolveField('posts')

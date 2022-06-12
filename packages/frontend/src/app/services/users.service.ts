@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Logger } from "./logger/logger";
-import { MeGQL } from "../graphql/generated/schema";
+import {MeGQL, Role} from "../graphql/generated/schema";
 
 export interface IUser {
   id: string,
   email: string,
-  roles: Array<string>
+  roles: Array<Role>
 }
 
 
@@ -22,11 +22,8 @@ export class UsersService {
 
   public getAndSetMe() {
     this.logger.func("getMe")
-    this.meGQL.watch().valueChanges.subscribe((v) => {
-      this.current_user$.next({
-        ...v.data.me,
-        roles: [v.data.me.role]
-      })
+    this.meGQL.fetch({}, {fetchPolicy: "no-cache"}).subscribe((v) => {
+      this.current_user$.next(v.data.me)
     })
   }
 }

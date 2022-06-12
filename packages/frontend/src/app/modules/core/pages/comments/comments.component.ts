@@ -24,4 +24,13 @@ export class CommentsComponent extends BaseTableComponent<QComment, QCommentEdge
   loadDataFromServer(first: number, after?: string) {
     return this.commentsGQL.fetch({first, after})
   }
+
+  deleteData(data_id: string): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+
+  // @ts-ignore
+  updateData(data: QComment) {
+    return Promise.resolve({});
+  }
 }

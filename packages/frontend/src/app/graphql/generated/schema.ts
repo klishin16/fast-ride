@@ -175,6 +175,9 @@ export type Mutation = {
   createReview: Review;
   login: Auth;
   refreshToken: Token;
+  removeEstimation: Estimation;
+  removeFeature: Feature;
+  removeUser: User;
   signup: Auth;
   updateComment: Comment;
   updateEstimation: Estimation;
@@ -221,6 +224,21 @@ export type MutationLoginArgs = {
 
 export type MutationRefreshTokenArgs = {
   token: Scalars['JWT'];
+};
+
+
+export type MutationRemoveEstimationArgs = {
+  estimation_id: Scalars['String'];
+};
+
+
+export type MutationRemoveFeatureArgs = {
+  feature_id: Scalars['String'];
+};
+
+
+export type MutationRemoveUserArgs = {
+  user_id: Scalars['String'];
 };
 
 
@@ -483,6 +501,7 @@ export type UpdateReviewInput = {
 export type UpdateUserInput = {
   firstname?: InputMaybe<Scalars['String']>;
   lastname?: InputMaybe<Scalars['String']>;
+  roles?: InputMaybe<Array<Role>>;
 };
 
 export type User = {
@@ -494,7 +513,7 @@ export type User = {
   id: Scalars['ID'];
   lastname?: Maybe<Scalars['String']>;
   posts: Array<Post>;
-  role: Role;
+  roles: Array<Role>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime'];
 };
@@ -517,14 +536,14 @@ export type AuthLoginMutationVariables = Exact<{
 }>;
 
 
-export type AuthLoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Auth', accessToken: any, refreshToken: any, user: { __typename?: 'User', id: string, email: string } } };
+export type AuthLoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Auth', accessToken: any, refreshToken: any, user: { __typename?: 'User', id: string, email: string, roles: Array<Role> } } };
 
 export type AuthSignupMutationVariables = Exact<{
   data: SignupInput;
 }>;
 
 
-export type AuthSignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'Auth', accessToken: any, refreshToken: any, user: { __typename?: 'User', id: string, email: string, role: Role } } };
+export type AuthSignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'Auth', accessToken: any, refreshToken: any, user: { __typename?: 'User', id: string, email: string, roles: Array<Role> } } };
 
 export type GetCommentsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -597,7 +616,7 @@ export type GetFeaturesQueryVariables = Exact<{
 }>;
 
 
-export type GetFeaturesQuery = { __typename?: 'Query', featuresWithPagination: { __typename?: 'FeatureConnection', totalCount: number, edges?: Array<{ __typename?: 'FeatureEdge', node: { __typename?: 'Feature', id: string, topLeftLat: number, topLeftLng: number, bottomRightLat: number, bottomRightLnt: number } }> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type GetFeaturesQuery = { __typename?: 'Query', featuresWithPagination: { __typename?: 'FeatureConnection', totalCount: number, edges?: Array<{ __typename?: 'FeatureEdge', node: { __typename?: 'Feature', id: string, topLeftLat: number, topLeftLng: number, bottomRightLat: number, bottomRightLnt: number, review?: { __typename?: 'Review', estimation?: { __typename?: 'Estimation', road_congestion: number, road_quality: number, travel_safety: number } | null } | null } }> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
 export type CreateReviewMutationVariables = Exact<{
   data: CreateReviewInput;
@@ -641,12 +660,19 @@ export type GetUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', usersWithPagination: { __typename?: 'UsersConnection', totalCount: number, edges?: Array<{ __typename?: 'UserEdge', node: { __typename?: 'User', id: string, email: string, firstname?: string | null, lastname?: string | null, createdAt: any, updatedAt: any } }> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type GetUsersQuery = { __typename?: 'Query', usersWithPagination: { __typename?: 'UsersConnection', totalCount: number, edges?: Array<{ __typename?: 'UserEdge', node: { __typename?: 'User', id: string, email: string, firstname?: string | null, lastname?: string | null, roles: Array<Role>, createdAt: any, updatedAt: any } }> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+
+export type UpdateUserMutationVariables = Exact<{
+  data: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, roles: Array<Role> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, email: string, role: Role } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, email: string, roles: Array<Role> } };
 
 export const AuthLoginDocument = gql`
     mutation AuthLogin($data: LoginInput!) {
@@ -656,6 +682,7 @@ export const AuthLoginDocument = gql`
     user {
       id
       email
+      roles
     }
   }
 }
@@ -679,7 +706,7 @@ export const AuthSignupDocument = gql`
     user {
       id
       email
-      role
+      roles
     }
   }
 }
@@ -922,6 +949,13 @@ export const GetFeaturesDocument = gql`
         topLeftLng
         bottomRightLat
         bottomRightLnt
+        review {
+          estimation {
+            road_congestion
+            road_quality
+            travel_safety
+          }
+        }
       }
     }
     pageInfo {
@@ -1083,6 +1117,7 @@ export const GetUsersDocument = gql`
         email
         firstname
         lastname
+        roles
         createdAt
         updatedAt
       }
@@ -1106,12 +1141,33 @@ export const GetUsersDocument = gql`
       super(apollo);
     }
   }
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($data: UpdateUserInput!) {
+  updateUser(data: $data) {
+    id
+    firstname
+    lastname
+    roles
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
+    override document = UpdateUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const MeDocument = gql`
     query Me {
   me {
     id
     email
-    role
+    roles
   }
 }
     `;

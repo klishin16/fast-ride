@@ -43,6 +43,7 @@ export interface DatabaseConfig {
   host: string;
   user: string;
   password: string;
+  name: string
   schema: string;
 }
 

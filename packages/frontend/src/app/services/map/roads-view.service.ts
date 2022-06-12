@@ -11,11 +11,10 @@ import {
   take, tap,
   withLatestFrom
 } from "rxjs";
-import { Exact, Feature, FeaturesGQL, FeaturesQuery, Review } from "../../graphql/generated/schema";
+import { Feature, FeaturesGQL, Review } from "../../graphql/generated/schema";
 import { MapService } from "./map.service";
 import { featuresToGeoJson, generateFeatureColor, mapBoundsToDbBounds } from "./map.helpers";
 import { withLatestFromFilter } from "./map.types";
-import { QueryRef } from "apollo-angular";
 
 @Injectable({
   providedIn: "root"

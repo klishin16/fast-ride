@@ -12,7 +12,7 @@ Table User {
   lastname String
   posts Post [not null]
   reviews Review [not null]
-  role Role [not null]
+  roles Role [not null]
   comments Comment [not null]
   likes CommentLike [not null]
 }

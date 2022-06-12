@@ -25,8 +25,8 @@ export const configuration = () => (<IConfig>{
     path: 'api',
   },
   graphql: {
-    playgroundEnabled: true,
-    debug: true,
+    playgroundEnabled: false,
+    debug: process.env.GRAPHQL_PLAYGROUND || false,
     schemaDestination: './src/schema.graphql',
     sortSchema: true,
   },

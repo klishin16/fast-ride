@@ -20,7 +20,7 @@ export class GqlConfigService implements GqlOptionsFactory {
       // subscription
       installSubscriptionHandlers: true,
       debug: graphqlConfig.debug,
-      playground: false,
+      playground: graphqlConfig.playgroundEnabled,
       driver: ApolloDriver,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       context: ({ req }) => ({ req }),

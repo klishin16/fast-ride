@@ -9,7 +9,6 @@
     ]
   },
   "scripts": {
-    "start:local": "lerna exec -- yarn run start",
     "start:local:dev": "lerna exec -- yarn run start:dev",
     "start:front:local": "lerna exec --scope frontend -- yarn run start",
     "start:back:local": "lerna exec --scope backend -- yarn run start",
@@ -21,7 +20,8 @@
     "execute:back:prod": "lerna exec --scope backend -- yarn run execute:production",
     "deploy:backend:heroku": "lerna exec --scope backend -- yarn run build:production; node dist/src/main.js",
     "deploy:back:heroku": "node packages/backend/dist/src/main.js",
-    "postinstall": "lerna exec --scope backend -- yarn prisma generate; lerna exec --scope backend -- yarn build:production"
+    "build": "yarn workspace backend run prisma:generate; yarn workspace backend run build:production",
+    "start": "yarn workspace backend run start"
   },
   "devDependencies": {
     "@types/node": "16.11.0",
@@ -39,5 +39,6 @@
   "engines": {
     "node": ">= 16.11.0",
     "yarn": ">= 1.x"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }

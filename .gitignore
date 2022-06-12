@@ -3,6 +3,7 @@ node_modules/
 
 # Yarn
 .yarn/*
+.pnp.*
 !.yarn/cache
 !.yarn/releases
 !.yarn/plugins

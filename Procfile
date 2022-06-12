@@ -1,1 +1,1 @@
-web: yarn deploy:backend:heroku
+web: yarn deploy:back:heroku
